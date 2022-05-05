@@ -13,7 +13,7 @@ namespace gcp_net_framework_sample.Controllers
     { 
         private readonly StorageClient _storage;
         private string _bucketName;
-        private string _objectName;
+        private string _bucketObjectName;
 
         public class Form
         {
@@ -23,8 +23,8 @@ namespace gcp_net_framework_sample.Controllers
         public CloudStorageController()
         {
             _storage = StorageClient.Create();
-            _bucketName = Environment.GetEnvironmentVariable("blank-notes-bucket");
-            _objectName = Environment.GetEnvironmentVariable("test.json");
+            _bucketName = Environment.GetEnvironmentVariable("bucketName");
+            _bucketObjectName = Environment.GetEnvironmentVariable("bucketobjectName");
         }
 
         [HttpGet]
@@ -40,12 +40,12 @@ namespace gcp_net_framework_sample.Controllers
 
                 // Get the storage object.
                 var storageObject =
-                    await _storage.GetObjectAsync(_bucketName, _objectName);
+                    await _storage.GetObjectAsync(_bucketName, _bucketObjectName);
 
                 // Download the storage object.
                 MemoryStream m = new MemoryStream();
                 await _storage.DownloadObjectAsync(
-                     _bucketName, _objectName, m);
+                     _bucketName, _bucketObjectName, m);
                 m.Seek(0, SeekOrigin.Begin);
                 byte[] content = new byte[m.Length];
                 m.Read(content, 0, content.Length);
@@ -67,7 +67,7 @@ namespace gcp_net_framework_sample.Controllers
             // Google Cloud Storage.
 
             await _storage.UploadObjectAsync(
-                 _bucketName, _objectName, "text/plain",
+                 _bucketName, _bucketObjectName, "text/plain",
                 new MemoryStream(Encoding.UTF8.GetBytes(sendForm.Content)));
 
 
