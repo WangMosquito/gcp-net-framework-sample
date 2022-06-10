@@ -1,0 +1,19 @@
+﻿@model gcp_net_framework_sample.Models.SecretManagerViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<H1>Secret Manager Sample</H1>
+<form method="post" id="TextForm">
+    <label for="content">ProjectID:</label>
+    @Html.TextBoxFor(model => model.ProjectID)<br />
+    <label for="content">SecretID:</label>
+    @Html.TextBoxFor(model => model.SecretID)<br />
+    <label for="content">SecretVersionID:</label>
+    @Html.TextBoxFor(model => model.SecretVersionID)<br />
+    <button id="Submit" type="submit">Save</button>
+</form>
+@if (string.IsNullOrWhiteSpace(Model.Result) == false)
+{
+    <p>@Model.Result</p>
+}

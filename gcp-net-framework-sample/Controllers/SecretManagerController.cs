@@ -1,4 +1,5 @@
-﻿using Google.Cloud.SecretManager.V1;
+﻿using gcp_net_framework_sample.Models;
+using Google.Cloud.SecretManager.V1;
 using System;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -9,25 +10,18 @@ namespace gcp_net_framework_sample.Controllers
     {
         public async Task<ActionResult> Index()
         {
-            try
-            {
-                string projectid = Environment.GetEnvironmentVariable("projectid");
-                string secretId = Environment.GetEnvironmentVariable("secretId");
-                string secretVersionId = Environment.GetEnvironmentVariable("secretVersionId");
+            return View(new SecretManagerViewModel());
+        }
 
-                Console.WriteLine($"projectid {projectid}");
-                Console.WriteLine($"secretId {secretId}");
-                Console.WriteLine($"secretVersionId {secretVersionId}");
-
-                SecretManagerServiceClient client = SecretManagerServiceClient.Create();
-                SecretVersionName secretVersionName = new SecretVersionName(projectid, secretId, secretVersionId);
-                AccessSecretVersionResponse result = client.AccessSecretVersion(secretVersionName);
-                return Content(result.Payload.Data.ToStringUtf8());
-            }
-            catch (Exception ex)
-            {
-                return Content(ex.StackTrace);
-            }
+        [HttpPost]
+        public async Task<ActionResult> Index(SecretManagerViewModel model)
+        {
+            model.SecretVersionID = string.IsNullOrWhiteSpace(model.SecretVersionID) ? "latest" : model.SecretVersionID;
+            SecretManagerServiceClient client = SecretManagerServiceClient.Create();
+            SecretVersionName secretVersionName = new SecretVersionName(model.ProjectID, model.SecretID, model.SecretVersionID);
+            AccessSecretVersionResponse result = client.AccessSecretVersion(secretVersionName);
+            model.Result = result.Payload.Data.ToStringUtf8();
+            return View(model);
         }
     }
 }

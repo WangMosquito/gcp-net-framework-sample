@@ -16,8 +16,12 @@ else
         <p>The new content was saved.</p>
     }
     <form method="post" id="TextForm">
+        <label for="content">BucketName:</label>
+        @Html.TextBoxFor(model => model.BucketName)<br />
+        <label for="content">BucketobjectName:</label>
+        @Html.TextBoxFor(model => model.BucketobjectName)<br />
         <label for="content">Enter some file content:</label><br />
-        @Html.TextAreaFor(model=>model.Content)<br />
+        @Html.TextAreaFor(model => model.Content)<br />
         <button id="Submit" type="submit">Save</button>
     </form>
 }

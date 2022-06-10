@@ -1,0 +1,23 @@
+﻿@model gcp_net_framework_sample.Models.CloudSqlViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<H1>Cloud Sql Sample</H1>
+<form method="post" id="TextForm">
+    <label for="content">ProjectID:</label>
+    @Html.TextBoxFor(model => model.ProjectID)<br />
+    <label for="content">Secret Manager UserName:</label>
+    @Html.TextBoxFor(model => model.UserName)<br />
+    <label for="content">Secret Manager Password:</label>
+    @Html.TextBoxFor(model => model.Password)<br />
+    <label for="content">ServerName:</label>
+    @Html.TextBoxFor(model => model.ServerName)<br />
+    <label for="content">DataBase:</label>
+    @Html.TextBoxFor(model => model.DataBase)<br />
+    <button id="Submit" type="submit">Save</button>
+</form>
+@if (string.IsNullOrWhiteSpace(Model.Result) == false)
+{
+    <p>@Model.Result</p>
+}
